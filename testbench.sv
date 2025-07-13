@@ -1,0 +1,53 @@
+
+module tb_bcd_to_7seg_display;
+
+    reg clk;
+    reg reset;
+  reg [3:0] bcd_data;        
+    wire [6:0] seg;            
+    wire [3:0] an;             
+    
+  
+    bcd_to_7seg_display uut (
+        .clk(clk),
+        .reset(reset),
+        .bcd_data(bcd_data),
+        .seg(seg),
+        .an(an)
+    );
+
+    
+    always #10 clk = ~clk;
+
+    initial begin
+      $dumpfile("bcd_to_7seg_display.vcd");
+      $dumpvars;
+        $monitor("Time = %0t | BCD = %h | seg = %b | an = %b", $time, bcd_data, seg, an);
+
+        
+        clk = 0;
+        reset = 1;
+        bcd_data = 4'h0000;
+
+        #50 reset = 0;
+
+        
+        bcd_data = 4'h1234;
+        #10000;
+
+        
+        bcd_data = 4'h5678;
+        #10000;
+
+        
+        bcd_data = 4'h90AF;
+        #10000;
+
+       
+        bcd_data = 4'h9BCD;
+        #10000;
+
+        $finish;
+    end
+
+endmodule
